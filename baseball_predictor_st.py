@@ -607,7 +607,7 @@ else:
 
 
 # Print results
-st.markdown('## ' + your_team + ' ~> vs ' + opp_team)
+st.markdown('## ' + your_team + '  (vs ' + opp_team + ')')
 st.markdown('# ')
 if your_team == home_team:
     if prediction_home ==  1:
