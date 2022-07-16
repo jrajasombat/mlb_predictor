@@ -289,7 +289,7 @@ if your_home == 'Yes':
                    }
 
         # Train-Test split
-        for i in range(0,100):
+        for i in range(0,25):
             X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = test_size, random_state = i)
 
             # Loop through models
@@ -486,7 +486,7 @@ else:
                    }
 
         # Train-Test split
-        for i in range(0,100):
+        for i in range(0,25):
             X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = test_size, random_state = i)
 
             # Loop through models
