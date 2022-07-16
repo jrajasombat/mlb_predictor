@@ -73,7 +73,7 @@ your_team = st.sidebar.selectbox('Select your team', (
 
 count += 1
 
-your_pitcher = st.sidebar.text_input('Who is their starting pitcher? (Last name only)', value = 'Carrasco', key = count)
+your_pitcher = st.sidebar.text_input('Who is their starting pitcher? Last name only', value = 'Carrasco', key = count)
 
 count += 1
 
@@ -124,7 +124,7 @@ opp_team = st.sidebar.selectbox('Select the opposing team', (
 
 count += 1
 
-opp_pitcher = st.sidebar.text_input('Who is their starting pitcher? (Last name only)', value = 'Gray', key = count)
+opp_pitcher = st.sidebar.text_input('Who is their starting pitcher? Last name only', value = 'Gray', key = count)
 
 count += 1
 
