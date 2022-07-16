@@ -35,7 +35,7 @@ st.markdown('## ')
 st.sidebar.markdown('## ENTER PARAMETERS')
 
 # Enter inputs
-st.sidebar.markdown("### ENTER YOUR TEAM'S INFORMATION")
+st.sidebar.markdown("### YOUR TEAM'S INFORMATION")
 
 count = 0
 
@@ -73,6 +73,10 @@ your_team = st.sidebar.selectbox('Select your team', (
 
 count += 1
 
+your_pitcher = st.sidebar.text_input('Who is their starting pitcher?', value = 'Carrasco', key = count)
+
+count += 1
+
 your_home = st.sidebar.selectbox('Are they playing at home?', ('Yes','No'), index = 0, key = count)
 
 count += 1
@@ -81,14 +85,10 @@ your_odds = st.sidebar.number_input('Enter decimal odds from your betting app', 
 
 count += 1
 
-your_pitcher = st.sidebar.text_input('Who is their starting pitcher?', value = 'Carrasco', key = count)
-
-count += 1
-
 st.sidebar.markdown('## ')
 st.sidebar.markdown('## ')
 
-st.sidebar.markdown("### ENTER THE OPPOSING TEAM'S INFORMATION")
+st.sidebar.markdown("### OPPOSING TEAM'S INFORMATION")
 
 opp_team = st.sidebar.selectbox('Select the opposing team', (
 'ARI',
