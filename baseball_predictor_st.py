@@ -608,8 +608,8 @@ else:
 
 
 # Print results
-st.markdown('## ' + your_team)
-st.markdown('versus ' + opp_team)
+st.markdown('## ' + your_team + ' [versus ' + opp_team + ']')
+st.markdown('# ')
 if your_team == home_team:
     if prediction_home ==  1:
         st.markdown('### WIN ~> Probability of winning is: ' + str(prediction_prob_home[0][1]))
