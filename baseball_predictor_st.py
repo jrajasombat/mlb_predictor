@@ -194,157 +194,130 @@ else:
 
 
 # Main code: copy/paste from my existing code (fix and refactor this later)
-next_game_home_text_1 = 'Opp_' + away_team
-next_game_home_text_2 = 'Opposing_Pitcher_' + away_pitcher
-next_game_home_text_3 = 'Starting_Pitcher_' + home_pitcher
-next_game_away_text_1 = 'Opp_' + home_team
-next_game_away_text_2 = 'Opposing_Pitcher_' + home_pitcher
-next_game_away_text_3 = 'Starting_Pitcher_' + away_pitcher
+
+with st.spinner('Analysis in progress...'):
+
+    next_game_home_text_1 = 'Opp_' + away_team
+    next_game_home_text_2 = 'Opposing_Pitcher_' + away_pitcher
+    next_game_home_text_3 = 'Starting_Pitcher_' + home_pitcher
+    next_game_away_text_1 = 'Opp_' + home_team
+    next_game_away_text_2 = 'Opposing_Pitcher_' + home_pitcher
+    next_game_away_text_3 = 'Starting_Pitcher_' + away_pitcher
 
 
 
-end_date = date.today()
-end_season = end_date.year
-number_of_seasons = 4
-seasons_range = [end_season - i for i in sorted(list(range(0,number_of_seasons)), reverse=True)]
+    end_date = date.today()
+    end_season = end_date.year
+    number_of_seasons = 4
+    seasons_range = [end_season - i for i in sorted(list(range(0,number_of_seasons)), reverse=True)]
 
-test_size = 0.25
+    test_size = 0.25
 
-if your_home == 'Yes':
-    # Home team
-    schedule = pd.concat([pbb.schedule_and_record(season, home_team) for season in seasons_range], ignore_index=True)
-    schedule = schedule[schedule['W/L'].notna()]
-    schedule.loc[schedule['W/L'] == 'L-wo', 'W/L'] = 'L'
-    schedule.loc[schedule['W/L'] == 'W-wo', 'W/L'] = 'W'
-    data = schedule[['Home_Away','Opp','Win','Loss','W/L']]
-
-
-    # Define functions
-    def starting_pitcher(win_loss, win_pitcher, loss_pitcher):
-        if win_loss == 'W':
-            return win_pitcher
-        elif win_loss == 'L':
-            return loss_pitcher
-        else:
-            return 'error'
-
-    def opposing_pitcher(win_loss, win_pitcher, loss_pitcher):
-        if win_loss == 'W':
-            return loss_pitcher
-        elif win_loss == 'L':
-            return win_pitcher
-        else:
-            return 'error'
-
-    def home(home_away):
-        if home_away == '@':
-            return 0
-        elif home_away == 'Home':
-            return 1
-        else:
-            return 0
-
-    def result(win_loss):
-        if win_loss == 'W':
-            return 1
-        elif win_loss == 'L':
-            return 0
-        else:
-            return 0
-
-    data['Starting_Pitcher'] = data.apply(lambda row: starting_pitcher(row['W/L'], row['Win'],row['Loss']), axis=1)
-    data['Opposing_Pitcher'] = data.apply(lambda row: opposing_pitcher(row['W/L'], row['Win'],row['Loss']), axis=1)
-    data['Home'] = data.apply(lambda row: home(row['Home_Away']), axis=1)
-    data.drop(['Home_Away','Win','Loss'], axis=1, inplace=True)
-    data['Result'] = data.apply(lambda row: result(row['W/L']), axis=1)
-    data.drop('W/L', axis=1, inplace=True)
-    first_col = data.pop('Result')
-    data.insert(0, 'Result', first_col)
-    data = pd.get_dummies(data)
+    if your_home == 'Yes':
+        with st.spinner('Analyzing schedule...'):
+            # Home team
+            schedule = pd.concat([pbb.schedule_and_record(season, home_team) for season in seasons_range], ignore_index=True)
+            schedule = schedule[schedule['W/L'].notna()]
+            schedule.loc[schedule['W/L'] == 'L-wo', 'W/L'] = 'L'
+            schedule.loc[schedule['W/L'] == 'W-wo', 'W/L'] = 'W'
+            data = schedule[['Home_Away','Opp','Win','Loss','W/L']]
 
 
-    # ### Create 'X' and 'y' split and fit baseline models
-    X = data.drop('Result', axis=1)
-    y = data['Result']
+            # Define functions
+            def starting_pitcher(win_loss, win_pitcher, loss_pitcher):
+                if win_loss == 'W':
+                    return win_pitcher
+                elif win_loss == 'L':
+                    return loss_pitcher
+                else:
+                    return 'error'
 
-    models = {
-        'Knn'           : KNeighborsClassifier(),
-        'Decision Tree' : DecisionTreeClassifier(),
-        'Random Forest' : RandomForestClassifier(),
-        'SVM'           : SVC(probability=True),
-        'Logistic Regression': LogisticRegression(),
-        'Naive Bayes' : GaussianNB(),
-        'Gradient Boost' : GradientBoostingClassifier()
-    }
+            def opposing_pitcher(win_loss, win_pitcher, loss_pitcher):
+                if win_loss == 'W':
+                    return loss_pitcher
+                elif win_loss == 'L':
+                    return win_pitcher
+                else:
+                    return 'error'
+
+            def home(home_away):
+                if home_away == '@':
+                    return 0
+                elif home_away == 'Home':
+                    return 1
+                else:
+                    return 0
+
+            def result(win_loss):
+                if win_loss == 'W':
+                    return 1
+                elif win_loss == 'L':
+                    return 0
+                else:
+                    return 0
+
+            data['Starting_Pitcher'] = data.apply(lambda row: starting_pitcher(row['W/L'], row['Win'],row['Loss']), axis=1)
+            data['Opposing_Pitcher'] = data.apply(lambda row: opposing_pitcher(row['W/L'], row['Win'],row['Loss']), axis=1)
+            data['Home'] = data.apply(lambda row: home(row['Home_Away']), axis=1)
+            data.drop(['Home_Away','Win','Loss'], axis=1, inplace=True)
+            data['Result'] = data.apply(lambda row: result(row['W/L']), axis=1)
+            data.drop('W/L', axis=1, inplace=True)
+            first_col = data.pop('Result')
+            data.insert(0, 'Result', first_col)
+            data = pd.get_dummies(data)
+
+        st.success('Schedule analysis complete')
+
+        with st.spinner('Selecting machine learning model_name...'):
+
+            # ### Create 'X' and 'y' split and fit baseline models
+            X = data.drop('Result', axis=1)
+            y = data['Result']
+
+            models = {
+                'Knn'           : KNeighborsClassifier(),
+                'Decision Tree' : DecisionTreeClassifier(),
+                'Random Forest' : RandomForestClassifier(),
+                'SVM'           : SVC(probability=True),
+                'Logistic Regression': LogisticRegression(),
+                'Naive Bayes' : GaussianNB(),
+                'Gradient Boost' : GradientBoostingClassifier()
+            }
 
 
-    # Initiate new results table
-    results_dict = {'Classifier':[],
-                'Train Accuracy':[],
-                'Test Accuracy':[]
-               }
+            # Initiate new results table
+            results_dict = {'Classifier':[],
+                        'Train Accuracy':[],
+                        'Test Accuracy':[]
+                       }
 
-    # Train-Test split
-    for i in range(0,100):
-        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = test_size, random_state = i)
+            # Train-Test split
+            for i in range(0,100):
+                X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = test_size, random_state = i)
 
-        # Loop through models
-        for model_name, model in models.items():
-            model.fit(X_train, y_train);
-            train_accuracy = model.score(X_train, y_train)*100
-            test_accuracy = model.score(X_test, y_test)*100
-            results_dict['Classifier'].append(model_name)
-            results_dict['Train Accuracy'].append(train_accuracy)
-            results_dict['Test Accuracy'].append(test_accuracy)
-        results_df = pd.DataFrame(results_dict)
-        if i % 10 == 0:
-            print(str(datetime.now().ctime()) + ': ' + str(i/100*100) + "%")
+                # Loop through models
+                for model_name, model in models.items():
+                    model.fit(X_train, y_train);
+                    train_accuracy = model.score(X_train, y_train)*100
+                    test_accuracy = model.score(X_test, y_test)*100
+                    results_dict['Classifier'].append(model_name)
+                    results_dict['Train Accuracy'].append(train_accuracy)
+                    results_dict['Test Accuracy'].append(test_accuracy)
+                results_df = pd.DataFrame(results_dict)
+                if i % 10 == 0:
+                    print(str(datetime.now().ctime()) + ': ' + str(i/100*100) + "%")
 
-    print(str(datetime.now().ctime()))
+            print(str(datetime.now().ctime()))
 
-    summary = results_df[['Classifier','Train Accuracy','Test Accuracy']].groupby(['Classifier']).mean()
-    summary['Composite Score'] = summary['Train Accuracy'] * 0.25 + summary['Test Accuracy']
+            summary = results_df[['Classifier','Train Accuracy','Test Accuracy']].groupby(['Classifier']).mean()
+            summary['Composite Score'] = summary['Train Accuracy'] * 0.25 + summary['Test Accuracy']
 
-    for i in range(len(summary)):
-        if summary.iloc[i]['Composite Score'] == summary['Composite Score'].max():
-            best_model_home = summary.iloc[i].name
-            test_accuracy_home = summary.iloc[i]['Test Accuracy']
-            print('')
-            print('The best model is ' + '\033[1m' + str(best_model_home) + '\033[0m' + ' --> ' + str(models[best_model_home]))
-
-    try:
-
-        zero_data = np.zeros(shape=(1,len(X.columns)))
-        next_game = pd.DataFrame(zero_data, columns=X.columns)
-
-        # Set relevant columns to 1:
-        next_game['Home'] = 1
-        next_game[next_game_home_text_1] = 1
-        next_game[next_game_home_text_2] = 1
-        next_game[next_game_home_text_3] = 1
-
-        next_game = np.array(next_game)
-        model = models[best_model_home]
-        model.fit(X, y)
-        prediction_home = model.predict(next_game.reshape(1, -1))
-        prediction_prob_home = model.predict_proba(next_game.reshape(1, -1))
-
-        try:
-
-            zero_data = np.zeros(shape=(1,len(X.columns)))
-            next_game = pd.DataFrame(zero_data, columns=X.columns)
-
-            # Set relevant columns to 1:
-            next_game['Home'] = 1
-            next_game[next_game_home_text_1] = 1
-            #next_game[next_game_home_text_2] = 1
-            next_game[next_game_home_text_3] = 1
-
-            next_game = np.array(next_game)
-            model = models[best_model_home]
-            model.fit(X, y)
-            prediction_home = model.predict(next_game.reshape(1, -1))
-            prediction_prob_home = model.predict_proba(next_game.reshape(1, -1))
+            for i in range(len(summary)):
+                if summary.iloc[i]['Composite Score'] == summary['Composite Score'].max():
+                    best_model_home = summary.iloc[i].name
+                    test_accuracy_home = summary.iloc[i]['Test Accuracy']
+                    print('')
+                    print('The best model is ' + '\033[1m' + str(best_model_home) + '\033[0m' + ' --> ' + str(models[best_model_home]))
 
             try:
 
@@ -355,23 +328,6 @@ if your_home == 'Yes':
                 next_game['Home'] = 1
                 next_game[next_game_home_text_1] = 1
                 next_game[next_game_home_text_2] = 1
-                #next_game[next_game_home_text_3] = 1
-
-                next_game = np.array(next_game)
-                model = models[best_model_home]
-                model.fit(X, y)
-                prediction_home = model.predict(next_game.reshape(1, -1))
-                prediction_prob_home = model.predict_proba(next_game.reshape(1, -1))
-
-            except:
-
-                zero_data = np.zeros(shape=(1,len(X.columns)))
-                next_game = pd.DataFrame(zero_data, columns=X.columns)
-
-                # Set relevant columns to 1:
-                next_game['Home'] = 1
-                #next_game[next_game_home_text_1] = 1
-                next_game[next_game_home_text_2] = 1
                 next_game[next_game_home_text_3] = 1
 
                 next_game = np.array(next_game)
@@ -380,158 +336,181 @@ if your_home == 'Yes':
                 prediction_home = model.predict(next_game.reshape(1, -1))
                 prediction_prob_home = model.predict_proba(next_game.reshape(1, -1))
 
-        except:
+                try:
 
-            print('Missing history')
+                    zero_data = np.zeros(shape=(1,len(X.columns)))
+                    next_game = pd.DataFrame(zero_data, columns=X.columns)
 
-    except:
+                    # Set relevant columns to 1:
+                    next_game['Home'] = 1
+                    next_game[next_game_home_text_1] = 1
+                    #next_game[next_game_home_text_2] = 1
+                    next_game[next_game_home_text_3] = 1
 
-            print('Missing history')
+                    next_game = np.array(next_game)
+                    model = models[best_model_home]
+                    model.fit(X, y)
+                    prediction_home = model.predict(next_game.reshape(1, -1))
+                    prediction_prob_home = model.predict_proba(next_game.reshape(1, -1))
 
-    if prediction_home ==  1:
-        print('WIN ~> Probability of winning is: ' + str(prediction_prob_home[0][1]))
+                    try:
+
+                        zero_data = np.zeros(shape=(1,len(X.columns)))
+                        next_game = pd.DataFrame(zero_data, columns=X.columns)
+
+                        # Set relevant columns to 1:
+                        next_game['Home'] = 1
+                        next_game[next_game_home_text_1] = 1
+                        next_game[next_game_home_text_2] = 1
+                        #next_game[next_game_home_text_3] = 1
+
+                        next_game = np.array(next_game)
+                        model = models[best_model_home]
+                        model.fit(X, y)
+                        prediction_home = model.predict(next_game.reshape(1, -1))
+                        prediction_prob_home = model.predict_proba(next_game.reshape(1, -1))
+
+                    except:
+
+                        zero_data = np.zeros(shape=(1,len(X.columns)))
+                        next_game = pd.DataFrame(zero_data, columns=X.columns)
+
+                        # Set relevant columns to 1:
+                        next_game['Home'] = 1
+                        #next_game[next_game_home_text_1] = 1
+                        next_game[next_game_home_text_2] = 1
+                        next_game[next_game_home_text_3] = 1
+
+                        next_game = np.array(next_game)
+                        model = models[best_model_home]
+                        model.fit(X, y)
+                        prediction_home = model.predict(next_game.reshape(1, -1))
+                        prediction_prob_home = model.predict_proba(next_game.reshape(1, -1))
+
+                except:
+
+                    print('Missing history')
+
+            except:
+
+                    print('Missing history')
+
+            if prediction_home ==  1:
+                print('WIN ~> Probability of winning is: ' + str(prediction_prob_home[0][1]))
+            else:
+                print('LOSE ~> Probability of losing is: ' + str(prediction_prob_home[0][0]))
+
+            betway_probability_home = 1 / home_decimal_odds
+            print(betway_probability_home)
+
+        st.success('Machine learning model training complete')
+
     else:
-        print('LOSE ~> Probability of losing is: ' + str(prediction_prob_home[0][0]))
+        with st.spinner('Analyzing schedule...'):
+            # Away team
+            schedule = pd.concat([pbb.schedule_and_record(season, away_team) for season in seasons_range], ignore_index=True)
+            schedule = schedule[schedule['W/L'].notna()]
+            schedule.loc[schedule['W/L'] == 'L-wo', 'W/L'] = 'L'
+            schedule.loc[schedule['W/L'] == 'W-wo', 'W/L'] = 'W'
 
-    betway_probability_home = 1 / home_decimal_odds
-    print(betway_probability_home)
-
-else:
-    # Away team
-    schedule = pd.concat([pbb.schedule_and_record(season, away_team) for season in seasons_range], ignore_index=True)
-    schedule = schedule[schedule['W/L'].notna()]
-    schedule.loc[schedule['W/L'] == 'L-wo', 'W/L'] = 'L'
-    schedule.loc[schedule['W/L'] == 'W-wo', 'W/L'] = 'W'
-
-    data = schedule[['Home_Away','Opp','Win','Loss','W/L']]
+            data = schedule[['Home_Away','Opp','Win','Loss','W/L']]
 
 
-    def starting_pitcher(win_loss, win_pitcher, loss_pitcher):
-        if win_loss == 'W':
-            return win_pitcher
-        elif win_loss == 'L':
-            return loss_pitcher
-        else:
-            return 'error'
+            def starting_pitcher(win_loss, win_pitcher, loss_pitcher):
+                if win_loss == 'W':
+                    return win_pitcher
+                elif win_loss == 'L':
+                    return loss_pitcher
+                else:
+                    return 'error'
 
-    def opposing_pitcher(win_loss, win_pitcher, loss_pitcher):
-        if win_loss == 'W':
-            return loss_pitcher
-        elif win_loss == 'L':
-            return win_pitcher
-        else:
-            return 'error'
-
-
-    def home(home_away):
-        if home_away == '@':
-            return 0
-        elif home_away == 'Home':
-            return 1
-        else:
-            return 0
-
-    def result(win_loss):
-        if win_loss == 'W':
-            return 1
-        elif win_loss == 'L':
-            return 0
-        else:
-            return 0
-
-    data['Starting_Pitcher'] = data.apply(lambda row: starting_pitcher(row['W/L'], row['Win'],row['Loss']), axis=1)
-    data['Opposing_Pitcher'] = data.apply(lambda row: opposing_pitcher(row['W/L'], row['Win'],row['Loss']), axis=1)
-    data['Home'] = data.apply(lambda row: home(row['Home_Away']), axis=1)
-    data.drop(['Home_Away','Win','Loss'], axis=1, inplace=True)
-    data['Result'] = data.apply(lambda row: result(row['W/L']), axis=1)
-    data.drop('W/L', axis=1, inplace=True)
-    first_col = data.pop('Result')
-    data.insert(0, 'Result', first_col)
-    data = pd.get_dummies(data)
+            def opposing_pitcher(win_loss, win_pitcher, loss_pitcher):
+                if win_loss == 'W':
+                    return loss_pitcher
+                elif win_loss == 'L':
+                    return win_pitcher
+                else:
+                    return 'error'
 
 
-    # Create 'X' and 'y' split and fit baseline models
-    X = data.drop('Result', axis=1)
-    y = data['Result']
+            def home(home_away):
+                if home_away == '@':
+                    return 0
+                elif home_away == 'Home':
+                    return 1
+                else:
+                    return 0
 
-    models = {
-        'Knn'           : KNeighborsClassifier(),
-        'Decision Tree' : DecisionTreeClassifier(),
-        'Random Forest' : RandomForestClassifier(),
-        'SVM'           : SVC(probability=True),
-        'Logistic Regression': LogisticRegression(),
-        'Naive Bayes' : GaussianNB(),
-        'Gradient Boost' : GradientBoostingClassifier()
-    }
+            def result(win_loss):
+                if win_loss == 'W':
+                    return 1
+                elif win_loss == 'L':
+                    return 0
+                else:
+                    return 0
 
-    # Initiate new results table
-    results_dict = {'Classifier':[],
-                'Train Accuracy':[],
-                'Test Accuracy':[]
-               }
+            data['Starting_Pitcher'] = data.apply(lambda row: starting_pitcher(row['W/L'], row['Win'],row['Loss']), axis=1)
+            data['Opposing_Pitcher'] = data.apply(lambda row: opposing_pitcher(row['W/L'], row['Win'],row['Loss']), axis=1)
+            data['Home'] = data.apply(lambda row: home(row['Home_Away']), axis=1)
+            data.drop(['Home_Away','Win','Loss'], axis=1, inplace=True)
+            data['Result'] = data.apply(lambda row: result(row['W/L']), axis=1)
+            data.drop('W/L', axis=1, inplace=True)
+            first_col = data.pop('Result')
+            data.insert(0, 'Result', first_col)
+            data = pd.get_dummies(data)
 
-    # Train-Test split
-    for i in range(0,100):
-        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = test_size, random_state = i)
+        st.success('Schedule analysis complete')
 
-        # Loop through models
-        for model_name, model in models.items():
-            model.fit(X_train, y_train);
-            train_accuracy = model.score(X_train, y_train)*100
-            test_accuracy = model.score(X_test, y_test)*100
-            results_dict['Classifier'].append(model_name)
-            results_dict['Train Accuracy'].append(train_accuracy)
-            results_dict['Test Accuracy'].append(test_accuracy)
-        results_df = pd.DataFrame(results_dict)
-        if i % 10 == 0:
-            print(str(datetime.now().ctime()) + ': ' + str(i/100*100) + "%")
+        with st.spinner('Selecting machine learning model_name...'):
 
-    print(str(datetime.now().ctime()))
+            # Create 'X' and 'y' split and fit baseline models
+            X = data.drop('Result', axis=1)
+            y = data['Result']
 
-    summary = results_df[['Classifier','Train Accuracy','Test Accuracy']].groupby(['Classifier']).mean()
-    summary['Composite Score'] = summary['Train Accuracy'] * 0.25 + summary['Test Accuracy']
+            models = {
+                'Knn'           : KNeighborsClassifier(),
+                'Decision Tree' : DecisionTreeClassifier(),
+                'Random Forest' : RandomForestClassifier(),
+                'SVM'           : SVC(probability=True),
+                'Logistic Regression': LogisticRegression(),
+                'Naive Bayes' : GaussianNB(),
+                'Gradient Boost' : GradientBoostingClassifier()
+            }
 
-    for i in range(len(summary)):
-        if summary.iloc[i]['Composite Score'] == summary['Composite Score'].max():
-            best_model_away = summary.iloc[i].name
-            test_accuracy_away = summary.iloc[i]['Test Accuracy']
-            print('')
-            print('The best model is ' + '\033[1m' + str(best_model_away) + '\033[0m' + ' --> ' + str(models[best_model_away]))
+            # Initiate new results table
+            results_dict = {'Classifier':[],
+                        'Train Accuracy':[],
+                        'Test Accuracy':[]
+                       }
 
+            # Train-Test split
+            for i in range(0,100):
+                X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = test_size, random_state = i)
 
-    try:
+                # Loop through models
+                for model_name, model in models.items():
+                    model.fit(X_train, y_train);
+                    train_accuracy = model.score(X_train, y_train)*100
+                    test_accuracy = model.score(X_test, y_test)*100
+                    results_dict['Classifier'].append(model_name)
+                    results_dict['Train Accuracy'].append(train_accuracy)
+                    results_dict['Test Accuracy'].append(test_accuracy)
+                results_df = pd.DataFrame(results_dict)
+                if i % 10 == 0:
+                    print(str(datetime.now().ctime()) + ': ' + str(i/100*100) + "%")
 
-        zero_data = np.zeros(shape=(1,len(X.columns)))
-        next_game = pd.DataFrame(zero_data, columns=X.columns)
+            print(str(datetime.now().ctime()))
 
-        # Set relevant columns to 1:
-        next_game['Home'] = 0
-        next_game[next_game_away_text_1] = 1
-        next_game[next_game_away_text_2] = 1
-        next_game[next_game_away_text_3] = 1
+            summary = results_df[['Classifier','Train Accuracy','Test Accuracy']].groupby(['Classifier']).mean()
+            summary['Composite Score'] = summary['Train Accuracy'] * 0.25 + summary['Test Accuracy']
 
-        next_game = np.array(next_game)
-        model = models[best_model_away]
-        model.fit(X, y)
-        prediction_away = model.predict(next_game.reshape(1, -1))
-        prediction_prob_away = model.predict_proba(next_game.reshape(1, -1))
+            for i in range(len(summary)):
+                if summary.iloc[i]['Composite Score'] == summary['Composite Score'].max():
+                    best_model_away = summary.iloc[i].name
+                    test_accuracy_away = summary.iloc[i]['Test Accuracy']
+                    print('')
+                    print('The best model is ' + '\033[1m' + str(best_model_away) + '\033[0m' + ' --> ' + str(models[best_model_away]))
 
-        try:
-
-            zero_data = np.zeros(shape=(1,len(X.columns)))
-            next_game = pd.DataFrame(zero_data, columns=X.columns)
-
-            # Set relevant columns to 1:
-            next_game['Home'] = 0
-            next_game[next_game_away_text_1] = 1
-            #next_game[next_game_away_text_2] = 1
-            next_game[next_game_away_text_3] = 1
-
-            next_game = np.array(next_game)
-            model = models[best_model_away]
-            model.fit(X, y)
-            prediction_away = model.predict(next_game.reshape(1, -1))
-            prediction_prob_away = model.predict_proba(next_game.reshape(1, -1))
 
             try:
 
@@ -542,23 +521,6 @@ else:
                 next_game['Home'] = 0
                 next_game[next_game_away_text_1] = 1
                 next_game[next_game_away_text_2] = 1
-                #next_game[next_game_away_text_3] = 1
-
-                next_game = np.array(next_game)
-                model = models[best_model_away]
-                model.fit(X, y)
-                prediction_away = model.predict(next_game.reshape(1, -1))
-                prediction_prob_away = model.predict_proba(next_game.reshape(1, -1))
-
-            except:
-
-                zero_data = np.zeros(shape=(1,len(X.columns)))
-                next_game = pd.DataFrame(zero_data, columns=X.columns)
-
-                # Set relevant columns to 1:
-                next_game['Home'] = 0
-                #next_game[next_game_away_text_1] = 1
-                next_game[next_game_away_text_2] = 1
                 next_game[next_game_away_text_3] = 1
 
                 next_game = np.array(next_game)
@@ -567,44 +529,101 @@ else:
                 prediction_away = model.predict(next_game.reshape(1, -1))
                 prediction_prob_away = model.predict_proba(next_game.reshape(1, -1))
 
-        except:
+                try:
 
-            print('Missing history')
+                    zero_data = np.zeros(shape=(1,len(X.columns)))
+                    next_game = pd.DataFrame(zero_data, columns=X.columns)
 
-    except:
+                    # Set relevant columns to 1:
+                    next_game['Home'] = 0
+                    next_game[next_game_away_text_1] = 1
+                    #next_game[next_game_away_text_2] = 1
+                    next_game[next_game_away_text_3] = 1
 
-            print('Missing history')
+                    next_game = np.array(next_game)
+                    model = models[best_model_away]
+                    model.fit(X, y)
+                    prediction_away = model.predict(next_game.reshape(1, -1))
+                    prediction_prob_away = model.predict_proba(next_game.reshape(1, -1))
+
+                    try:
+
+                        zero_data = np.zeros(shape=(1,len(X.columns)))
+                        next_game = pd.DataFrame(zero_data, columns=X.columns)
+
+                        # Set relevant columns to 1:
+                        next_game['Home'] = 0
+                        next_game[next_game_away_text_1] = 1
+                        next_game[next_game_away_text_2] = 1
+                        #next_game[next_game_away_text_3] = 1
+
+                        next_game = np.array(next_game)
+                        model = models[best_model_away]
+                        model.fit(X, y)
+                        prediction_away = model.predict(next_game.reshape(1, -1))
+                        prediction_prob_away = model.predict_proba(next_game.reshape(1, -1))
+
+                    except:
+
+                        zero_data = np.zeros(shape=(1,len(X.columns)))
+                        next_game = pd.DataFrame(zero_data, columns=X.columns)
+
+                        # Set relevant columns to 1:
+                        next_game['Home'] = 0
+                        #next_game[next_game_away_text_1] = 1
+                        next_game[next_game_away_text_2] = 1
+                        next_game[next_game_away_text_3] = 1
+
+                        next_game = np.array(next_game)
+                        model = models[best_model_away]
+                        model.fit(X, y)
+                        prediction_away = model.predict(next_game.reshape(1, -1))
+                        prediction_prob_away = model.predict_proba(next_game.reshape(1, -1))
+
+                except:
+
+                    print('Missing history')
+
+            except:
+
+                    print('Missing history')
 
 
-    if prediction_away ==  1:
-        print('WIN ~> Probability of winning is: ' + str(prediction_prob_away[0][1]))
-    else:
-        print('LOSE ~> Probability of losing is: ' + str(prediction_prob_away[0][0]))
+            if prediction_away ==  1:
+                print('WIN ~> Probability of winning is: ' + str(prediction_prob_away[0][1]))
+            else:
+                print('LOSE ~> Probability of losing is: ' + str(prediction_prob_away[0][0]))
 
 
 
-    betway_probability_away = 1 / away_decimal_odds
-    print(betway_probability_away)
+            betway_probability_away = 1 / away_decimal_odds
+            print(betway_probability_away)
+
+        st.success('Machine learning model training complete')
 
 
-# Print results
+    # Print results
 
-if your_team == home_team:
-    st.markdown(home_team)
-    if prediction_home ==  1:
-        st.markdown('# Result: WIN ~> Probability of winning is: ' + str(prediction_prob_home[0][1]))
-    else:
-        st.markdown('# Result: LOSE ~> Probability of losing is: ' + str(prediction_prob_home[0][0]))
-    #print(str(best_model_home) + ' --> ' + str(models[best_model_home]) + ' --> ' + 'Test accuracy: ' + str(test_accuracy_home))
-    st.markdown('###')
-    st.markdown('### Moneyline decimal odds: ' + str(home_decimal_odds) + ' ~> Win probability: ' + str(betway_probability_home))
+    if your_team == home_team:
+        st.markdown('## ' + home_team)
+        if prediction_home ==  1:
+            st.markdown('## Result: ')
+            st.markdown('## <span style="color:blue">WIN ~> Probability of winning is: ' + str(prediction_prob_home[0][1]))
+        else:
+            st.markdown('## Result: ')
+            st.markdown('## <span style="color:red">LOSE ~> Probability of losing is: ' + str(prediction_prob_home[0][0]))
+        st.markdown(str(best_model_home) + ' --> ' + str(models[best_model_home]) + ' --> ' + 'Test accuracy: ' + str(test_accuracy_home))
+        st.markdown('###')
+        st.markdown('#### Moneyline decimal odds: ' + str(home_decimal_odds) + ' ~> Win probability: ' + str(betway_probability_home))
 
-if your_team == away_team:
-    st.markdown(away_team)
-    if prediction_away ==  1:
-        st.markdown('# Result: WIN ~> Probability of winning is: ' + str(prediction_prob_away[0][1]))
-    else:
-        st.markdown('# Result: LOSE ~> Probability of losing is: ' + str(prediction_prob_away[0][0]))
-    #print(str(best_model_away) + ' --> ' + str(models[best_model_away]) + ' --> ' + 'Test accuracy: ' + str(test_accuracy_away))
-    st.markdown('###')
-    st.markdown('### Moneyline decimal odds: ' + str(away_decimal_odds) + ' ~> Win probability: ' + str(betway_probability_away))
+    if your_team == away_team:
+        st.markdown('## ' + away_team)
+        if prediction_away ==  1:
+            st.markdown('## Result: ')
+            st.markdown('## <span style="color:blue">WIN ~> Probability of winning is: ' + str(prediction_prob_away[0][1]))
+        else:
+            st.markdown('## Result: ')
+            st.markdown('## <span style="color:red">LOSE ~> Probability of losing is: ' + str(prediction_prob_away[0][0]))
+        st.markdown(str(best_model_away) + ' --> ' + str(models[best_model_away]) + ' --> ' + 'Test accuracy: ' + str(test_accuracy_away))
+        st.markdown('###')
+        st.markdown('#### Moneyline decimal odds: ' + str(away_decimal_odds) + ' ~> Win probability: ' + str(betway_probability_away))
