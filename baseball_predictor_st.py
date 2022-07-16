@@ -135,12 +135,12 @@ st.sidebar.markdown('## ')
 st.sidebar.markdown('## ')
 st.sidebar.markdown('## Notes')
 st.sidebar.markdown('* The __probability__ is computed by the machine learning model. ')
-st.sidebar.markdown('* The __implied probability__ from the decimal odds is computed as <br> __[1 / decimal odds]__. \
+st.sidebar.markdown('* The __implied probability__ from the decimal odds is computed as: __(1 / decimal odds)__. \
 Odds from betting apps are subject to the house spread or vig.')
 st.sidebar.markdown('## ')
 st.sidebar.markdown('* __Decimal odds__ is the multiple that is applied to your wager to determine \
-the bets potential payoff. This is shown on most betting apps.')
-st.sidebar.markdown(' __American odds__ are often quoted in American media and are usually prefixed \
+the potential payoff of the bet. This is shown on most betting apps.')
+st.sidebar.markdown('* __American odds__ are often quoted in American media and are prefixed \
 with a + or - sign followed by a three digit number (i.e., +150).')
 st.sidebar.markdown('* If the American odds are positive, the decimal odds are: __(American odds / 100) + 1__.')
 st.sidebar.markdown('* If the American odds are negative, the decimal odds are: __1 - (100 / - American odds)__.')
@@ -183,7 +183,7 @@ if your_home == 'Yes':
     home_pitcher = your_pitcher
     away_pitcher = opp_pitcher
     home_decimal_odds = your_odds
-    away_decimial_odds = opp_odds
+    away_decimal_odds = opp_odds
 else:
     home_team = opp_team
     away_team = your_team
