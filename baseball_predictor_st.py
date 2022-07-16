@@ -73,7 +73,7 @@ your_team = st.sidebar.selectbox('Select your team', (
 
 count += 1
 
-your_pitcher = st.sidebar.text_input('Who is their starting pitcher?', value = 'Carrasco', key = count)
+your_pitcher = st.sidebar.text_input('Who is their starting pitcher? (Last name only)', value = 'Carrasco', key = count)
 
 count += 1
 
@@ -124,7 +124,7 @@ opp_team = st.sidebar.selectbox('Select the opposing team', (
 
 count += 1
 
-opp_pitcher = st.sidebar.text_input('Who is their starting pitcher?', value = 'Gray', key = count)
+opp_pitcher = st.sidebar.text_input('Who is their starting pitcher? (Last name only)', value = 'Gray', key = count)
 
 count += 1
 
@@ -610,25 +610,19 @@ else:
 # Print results
 
 if your_team == home_team:
-    st.markdown('## ' + home_team)
     if prediction_home ==  1:
-        st.markdown('## Result: ')
         st.markdown('## WIN ~> Probability of winning is: ' + str(prediction_prob_home[0][1]))
     else:
-        st.markdown('## Result: ')
         st.markdown('## LOSE ~> Probability of losing is: ' + str(prediction_prob_home[0][0]))
-    st.markdown('#### Model: ' + str(best_model_home))
+    st.markdown('Model: ' + str(best_model_home))
     st.markdown('###')
-    st.markdown('#### Moneyline decimal odds: ' + str(home_decimal_odds) + ' ~> Win probability: ' + str('{:.2f}'.format(betway_probability_home)))
+    st.markdown('__Betting app decimal odds: ' + str(home_decimal_odds) + ' ~> win probability: __' + str('{:.2f}'.format(betway_probability_home)))
 
 if your_team == away_team:
-    st.markdown('## ' + away_team)
     if prediction_away ==  1:
-        st.markdown('## Result: ')
         st.markdown('## WIN ~> Probability of winning is: ' + str(prediction_prob_away[0][1]))
     else:
-        st.markdown('## Result: ')
         st.markdown('## LOSE ~> Probability of losing is: ' + str(prediction_prob_away[0][0]))
-    st.markdown('#### Model: ' + str(best_model_home))
+    st.markdown('Model: ' + str(best_model_home))
     st.markdown('###')
-    st.markdown('#### Moneyline decimal odds: ' + str(away_decimal_odds) + ' ~> Win probability: ' + str('{:.2f}'.format(betway_probability_away)))
+    st.markdown('__Betting app decimal odds: ' + str(away_decimal_odds) + ' ~> win probability: __' + str('{:.2f}'.format(betway_probability_away)))
