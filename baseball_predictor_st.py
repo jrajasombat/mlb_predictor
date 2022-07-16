@@ -81,7 +81,7 @@ your_home = st.sidebar.selectbox('Are they playing at home?', ('Yes','No'), inde
 
 count += 1
 
-your_odds = st.sidebar.number_input('Enter decimal odds from your betting app', value = 1.69, key = count)
+your_odds = st.sidebar.number_input('Enter decimal odds from your betting app', value = 1.30, key = count)
 
 count += 1
 
