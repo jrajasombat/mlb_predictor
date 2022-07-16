@@ -68,15 +68,15 @@ your_team = st.sidebar.selectbox('Select your team', (
 'TEX',
 'TOR',
 'WSN'
-), key = count)
+), index = 16, key = count)
 
 count += 1
 
-your_home = st.sidebar.selectbox('Are they playing at home?', ('Yes','No'), key = count)
+your_home = st.sidebar.selectbox('Are they playing at home?', ('Yes','No'), index = 0, key = count)
 
 count += 1
 
-your_pitcher = st.sidebar.text_input('Who is their starting pitcher?', key = count)
+your_pitcher = st.sidebar.text_input('Who is their starting pitcher?', value = 'Carrasco', key = count)
 
 count += 1
 
@@ -110,19 +110,19 @@ opp_team = st.sidebar.selectbox('Select the opposing team', (
 'TEX',
 'TOR',
 'WSN'
-), key = count)
+), index = 26, key = count)
 
 count += 1
 
-opp_pitcher = st.sidebar.text_input('Who is their starting pitcher?', key = count)
+opp_pitcher = st.sidebar.text_input('Who is their starting pitcher?', value = 'Gray', key = count)
 
 count += 1
 
-your_odds = st.sidebar.number_input('Enter decimal odds for your team', min_value = 1.00, key = count)
+your_odds = st.sidebar.number_input('Enter decimal odds for your team', value = 1.69, key = count)
 
 count += 1
 
-opp_odds = st.sidebar.number_input('Enter decimal odds for the opposing team', min_value = 1.00, key = count)
+opp_odds = st.sidebar.number_input('Enter decimal odds for the opposing team', value = 2.25, key = count)
 
 if your_home == 'Yes':
     home_team = your_team
