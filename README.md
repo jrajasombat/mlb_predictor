@@ -1,4 +1,4 @@
-# mlb_predictor
+# MLB Moneyline Predictor
 Simple machine learning streamlit to predict winning probabilities of baseball games
 
 
@@ -27,6 +27,6 @@ Simple machine learning streamlit to predict winning probabilities of baseball g
 - Apply grid search to find optimal parameters
 
 **Output**  
-- Your team's winning probability
+- Your team's winning probability for a specific game
     
 </span>
