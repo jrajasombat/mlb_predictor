@@ -137,7 +137,6 @@ st.sidebar.markdown('## Notes')
 st.sidebar.markdown('* The __probability__ is computed by the machine learning model. ')
 st.sidebar.markdown('* The __implied probability__ from the decimal odds is computed as: __(1 / decimal odds)__. \
 Odds from betting apps are subject to the house spread or vig.')
-st.sidebar.markdown('## ')
 st.sidebar.markdown('* __Decimal odds__ are the multiples that are applied to your wagers to determine \
 the potential payoff of your bets. This is shown on most betting apps.')
 st.sidebar.markdown('* __American odds__ are often quoted in American media and are prefixed \
@@ -608,7 +607,7 @@ else:
 
 
 # Print results
-st.markdown('## ' + your_team + ' [versus ' + opp_team + ']')
+st.markdown('## ' + your_team + ' ~> vs ' + opp_team)
 st.markdown('# ')
 if your_team == home_team:
     if prediction_home ==  1:
