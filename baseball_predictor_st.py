@@ -34,38 +34,10 @@ st.markdown('## ')
 # Initiate sidebar
 st.sidebar.markdown('## ENTER PARAMETERS')
 
-# Logo in the sidebar
-@st.cache(allow_output_mutation=True)
-def get_base64_of_bin_file(bin_file):
-    with open(bin_file, 'rb') as f:
-        data = f.read()
-    return base64.b64encode(data).decode()
-
-@st.cache(allow_output_mutation=True)
-def get_img_with_href(local_img_path, target_url):
-    img_format = os.path.splitext(local_img_path)[-1].replace('.', '')
-    bin_str = get_base64_of_bin_file(local_img_path)
-    html_code = f'''
-        <a href="{target_url}" target="_blank">
-            <img src="data:image/{img_format};base64,{bin_str}" width = "75" />
-        </a>'''
-    return html_code
-
-png_html = get_img_with_href('n.png', 'https://www.jimisinith.com')
-
-col1, col2, col3 = st.sidebar.beta_columns([3,7,1])
-with col1:
-    st.write("")
-with col2:
-    st.markdown(png_html, unsafe_allow_html=True)
-with col3:
-    st.write("")
-
-
 # Enter inputs
 count = 0
 
-your_team = st.sidebar.selectbox('## Select your team', (
+your_team = st.sidebar.selectbox('__Select your team__', (
 'ARI',
 'ATL',
 'BOS',
@@ -107,13 +79,14 @@ your_pitcher = st.sidebar.text_input('Who is their starting pitcher?', value = '
 
 count += 1
 
-your_odds = st.sidebar.number_input('Enter decimal odds for your team', value = 1.69, key = count)
+your_odds = st.sidebar.number_input('Enter decimal odds from your betting app', value = 1.69, key = count)
 
 count += 1
 
 st.sidebar.markdown('## ')
+st.sidebar.markdown('## ')
 
-opp_team = st.sidebar.selectbox('## Select the opposing team', (
+opp_team = st.sidebar.selectbox('__Select the opposing team__', (
 'ARI',
 'ATL',
 'BOS',
@@ -151,7 +124,7 @@ opp_pitcher = st.sidebar.text_input('Who is their starting pitcher?', value = 'G
 
 count += 1
 
-opp_odds = st.sidebar.number_input('Enter decimal odds for the opposing team', value = 2.25, key = count)
+opp_odds = st.sidebar.number_input('Enter decimal odds from your betting app', value = 2.25, key = count)
 
 # Configure sidebar
 st.sidebar.markdown('## ')
@@ -167,17 +140,48 @@ intervals.')
 st.sidebar.markdown('## ')
 st.sidebar.markdown('## ')
 
+# Logo in the sidebar
+@st.cache(allow_output_mutation=True)
+def get_base64_of_bin_file(bin_file):
+    with open(bin_file, 'rb') as f:
+        data = f.read()
+    return base64.b64encode(data).decode()
+
+@st.cache(allow_output_mutation=True)
+def get_img_with_href(local_img_path, target_url):
+    img_format = os.path.splitext(local_img_path)[-1].replace('.', '')
+    bin_str = get_base64_of_bin_file(local_img_path)
+    html_code = f'''
+        <a href="{target_url}" target="_blank">
+            <img src="data:image/{img_format};base64,{bin_str}" width = "75" />
+        </a>'''
+    return html_code
+
+png_html = get_img_with_href('n.png', 'https://www.jimisinith.com')
+
+col1, col2, col3 = st.sidebar.columns([3,7,1])
+with col1:
+    st.write("")
+with col2:
+    st.markdown(png_html, unsafe_allow_html=True)
+with col3:
+    st.write("")
+
 
 if your_home == 'Yes':
     home_team = your_team
     away_team = opp_team
     home_pitcher = your_pitcher
     away_pitcher = opp_pitcher
+    home_decimal_odds = your_odds
+    away_decimial_odds = opp_odds
 else:
     home_team = opp_team
     away_team = your_team
     home_pitcher = opp_pitcher
     away_pitcher = your_pitcher
+    home_decimal_odds = opp_odds
+    away_decimal_odss = your_odds
 
 
 # Main code: copy/paste from my existing code
