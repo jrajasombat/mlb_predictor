@@ -134,14 +134,17 @@ opp_odds = 1.00
 st.sidebar.markdown('## ')
 st.sidebar.markdown('## ')
 st.sidebar.markdown('## Notes')
-st.sidebar.markdown('* __Decimal odds__ is the multiple that is applied to your wager to determine \
-the bets potential payoff. To convert __American odds__ to __decimal odds__, apply the formula below:')
-st.sidebar.markdown('* If the American odds are positive the formula is as follows: (American odds / 100) + 1 = decimal odds.')
-st.sidebar.markdown('* If the American odds are negative, the formula is as follows: 1 - (100 / - American odds) = decimal odds.')
-st.sidebar.markdown('## ')
-st.sidebar.markdown('* The probability is computed by the machine learning model. ')
-st.sidebar.markdown('* The implied probability from the decimal odds is computed as 1 / decimal odds -- \
+st.sidebar.markdown('* The __probability__ is computed by the machine learning model. ')
+st.sidebar.markdown('* The __implied probability__ from the decimal odds is computed as __[1 / decimal odds]__ -- \
 all of which is subject to the house spread or vig.')
+st.sidebar.markdown('## ')
+st.sidebar.markdown('* __Decimal odds__ is the multiple that is applied to your wager to determine \
+the bets potential payoff. This is shown on most betting apps. __American odds__ are often quoted in American media \
+and are usually prefixed with a + or - sign followed by a three digit number (i.e., +150).')
+st.sidebar.markdown('* If the American odds are positive, the decimal odds are: (American odds / 100) + 1.')
+st.sidebar.markdown('* If the American odds are negative, the decimal odds are: 1 - (100 / - American odds).')
+
+
 st.sidebar.markdown('## ')
 st.sidebar.markdown('## ')
 
@@ -186,7 +189,7 @@ else:
     home_pitcher = opp_pitcher
     away_pitcher = your_pitcher
     home_decimal_odds = opp_odds
-    away_decimal_odss = your_odds
+    away_decimal_odds = your_odds
 
 
 # Main code: copy/paste from my existing code
