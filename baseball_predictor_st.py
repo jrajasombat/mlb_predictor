@@ -616,7 +616,7 @@ if your_team == home_team:
         st.markdown('## LOSE ~> Probability of losing is: ' + str(prediction_prob_home[0][0]))
     st.markdown('Model: ' + str(best_model_home))
     st.markdown('###')
-    st.markdown('__Betting app decimal odds: ' + str(home_decimal_odds) + ' ~> win probability: __' + str('{:.2f}'.format(betway_probability_home)))
+    st.markdown('Betting app decimal odds: ' + str(home_decimal_odds) + ' ~> win probability: ' + str('{:.2f}'.format(betway_probability_home)))
 
 if your_team == away_team:
     if prediction_away ==  1:
@@ -625,4 +625,4 @@ if your_team == away_team:
         st.markdown('## LOSE ~> Probability of losing is: ' + str(prediction_prob_away[0][0]))
     st.markdown('Model: ' + str(best_model_home))
     st.markdown('###')
-    st.markdown('__Betting app decimal odds: ' + str(away_decimal_odds) + ' ~> win probability: __' + str('{:.2f}'.format(betway_probability_away)))
+    st.markdown('Betting app decimal odds: ' + str(away_decimal_odds) + ' ~> win probability: ' + str('{:.2f}'.format(betway_probability_away)))
