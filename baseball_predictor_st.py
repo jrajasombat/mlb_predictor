@@ -73,7 +73,7 @@ your_team = st.sidebar.selectbox('Select your team', (
 
 count += 1
 
-your_pitcher = st.sidebar.text_input('Who is their starting pitcher? Last name only', value = 'Carrasco', key = count)
+your_pitcher = st.sidebar.text_input('Who is their starting pitcher? Last name only', value = 'Carrascp', key = count)
 
 count += 1
 
