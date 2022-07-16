@@ -26,4 +26,7 @@ Simple machine learning streamlit to predict winning probabilities of baseball g
 **Things left to do**
 - Apply grid search to find optimal parameters
 
+**Output**  
+- Your team's winning probability
+    
 </span>
