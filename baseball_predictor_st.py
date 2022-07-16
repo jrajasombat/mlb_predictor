@@ -35,9 +35,11 @@ st.markdown('## ')
 st.sidebar.markdown('## ENTER PARAMETERS')
 
 # Enter inputs
+st.sidebar.markdown("### ENTER YOUR TEAM'S INFORMATION")
+
 count = 0
 
-your_team = st.sidebar.selectbox('__Select your team__', (
+your_team = st.sidebar.selectbox('Select your team', (
 'ARI',
 'ATL',
 'BOS',
@@ -75,18 +77,20 @@ your_home = st.sidebar.selectbox('Are they playing at home?', ('Yes','No'), inde
 
 count += 1
 
-your_pitcher = st.sidebar.text_input('Who is their starting pitcher?', value = 'Carrasco', key = count)
-
-count += 1
-
 your_odds = st.sidebar.number_input('Enter decimal odds from your betting app', value = 1.69, key = count)
 
 count += 1
 
+your_pitcher = st.sidebar.text_input('Who is their starting pitcher?', value = 'Carrasco', key = count)
+
+count += 1
+
 st.sidebar.markdown('## ')
 st.sidebar.markdown('## ')
 
-opp_team = st.sidebar.selectbox('__Select the opposing team__', (
+st.sidebar.markdown("### ENTER THE OPPOSING TEAM'S INFORMATION")
+
+opp_team = st.sidebar.selectbox('Select the opposing team', (
 'ARI',
 'ATL',
 'BOS',
@@ -124,19 +128,20 @@ opp_pitcher = st.sidebar.text_input('Who is their starting pitcher?', value = 'G
 
 count += 1
 
-opp_odds = st.sidebar.number_input('Enter decimal odds from your betting app', value = 2.25, key = count)
+opp_odds = 1.00
 
 # Configure sidebar
 st.sidebar.markdown('## ')
 st.sidebar.markdown('## ')
-st.sidebar.markdown('## Discussion')
-st.sidebar.markdown('* One approach to reduce risk when constructing an investment portfolio \
-is __maximum diversification portfolio optimization__. In particular, this strategy maximizes \
-a diversification ratio and does not take into account expected returns.')
-st.sidebar.markdown('* The __diversification ratio__ is defined as the ratio of the weighted average \
-of all the volatilites in the portfolio divided by the total portfolio volatility.')
-st.sidebar.markdown('* This web app optimizes a portfolio of stocks, bonds, and gold at regular \
-intervals.')
+st.sidebar.markdown('## Notes')
+st.sidebar.markdown('* __Decimal odds__ is the multiple that is applied to your wager to determine \
+the bets potential payoff. To convert __American odds__ to __decimal odds__, apply the formula below:')
+st.sidebar.markdown('* If the American odds are positive the formula is as follows: (American odds / 100) + 1 = decimal odds.')
+st.sidebar.markdown('* If the American odds are negative, the formula is as follows: 1 - (100 / - American odds) = decimal odds.')
+st.sidebar.markdown('## ')
+st.sidebar.markdown('* The probability is computed by the machine learning model. ')
+st.sidebar.markdown('* The implied probability from the decimal odds is computed as 1 / decimal odds -- \
+all of which is subject to the house spread or vig.')
 st.sidebar.markdown('## ')
 st.sidebar.markdown('## ')
 
