@@ -126,10 +126,7 @@ st.sidebar.markdown('* This web app optimizes a portfolio of stocks, bonds, and 
 intervals.')
 st.sidebar.markdown('## ')
 st.sidebar.markdown('## ')
-st.sidebar.markdown('## Appendix')
-st.sidebar.image('div_ratio.png')
-st.sidebar.markdown('## ')
-st.sidebar.markdown('## ')
+
 
 # Logo in the sidebar
 @st.cache(allow_output_mutation=True)
