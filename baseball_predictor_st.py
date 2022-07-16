@@ -608,21 +608,21 @@ else:
 
 
 # Print results
-
+st.markdown('## ' + your_team + ' v ' + opp_team)
 if your_team == home_team:
     if prediction_home ==  1:
-        st.markdown('## WIN ~> Probability of winning is: ' + str(prediction_prob_home[0][1]))
+        st.markdown('### WIN ~> Probability of winning is: ' + str(prediction_prob_home[0][1]))
     else:
-        st.markdown('## LOSE ~> Probability of losing is: ' + str(prediction_prob_home[0][0]))
+        st.markdown('### LOSE ~> Probability of losing is: ' + str(prediction_prob_home[0][0]))
     st.markdown('Model: ' + str(best_model_home))
     st.markdown('###')
     st.markdown('Compare with betting app odds: ' + str(home_decimal_odds) + ' ~> Win probability: ' + str('{:.2f}'.format(betway_probability_home)))
 
 if your_team == away_team:
     if prediction_away ==  1:
-        st.markdown('## WIN ~> Probability of winning is: ' + str(prediction_prob_away[0][1]))
+        st.markdown('### WIN ~> Probability of winning is: ' + str(prediction_prob_away[0][1]))
     else:
-        st.markdown('## LOSE ~> Probability of losing is: ' + str(prediction_prob_away[0][0]))
+        st.markdown('### LOSE ~> Probability of losing is: ' + str(prediction_prob_away[0][0]))
     st.markdown('Model: ' + str(best_model_home))
     st.markdown('###')
     st.markdown('Compare with betting app odds: ' + str(away_decimal_odds) + ' ~> Win probability: ' + str('{:.2f}'.format(betway_probability_away)))
